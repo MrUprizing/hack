@@ -8,9 +8,6 @@ const { repoId } = await freestyle.createGitRepository({
   source: {
     url: "https://github.com/MrUprizing/back-hero-template", // Reemplaza con la URL de tu repo de GitHub
   },
-  devServers: {
-    preset: "nextJs",
-  },
 });
 
 console.log(`Created repo with ID: ${repoId}`);

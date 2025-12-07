@@ -38,9 +38,9 @@ export default function DashboardLayout({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="bg-input/50 border rounded-md gap-4 min-h-screen mx-4 p-4">
-          {children}
-        </div>
+        {/*<div className="bg-input/50 border rounded-md gap-4 min-h-screen mx-4 p-4">*/}
+        {children}
+        {/*</div>*/}
       </SidebarInset>
     </SidebarProvider>
   );
