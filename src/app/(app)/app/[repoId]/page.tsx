@@ -18,6 +18,7 @@ import {
   MousePointerClickIcon,
   RefreshCcwIcon,
   CodeIcon,
+  Bot,
 } from "lucide-react";
 import { requestDevServer } from "@/actions/dev-server";
 import { useParams } from "next/navigation";
@@ -30,6 +31,11 @@ import {
   InputGroupAddon,
   InputGroupButton,
 } from "@/components/ui/input-group";
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+} from "@/components/ui/message";
 import type { ChatMessage } from "@/app/(api)/api/chat/route";
 
 export default function Chat() {
@@ -122,59 +128,83 @@ export default function Chat() {
     setIsLoading(false);
   };
 
+  const renderMessageContent = (message: ChatMessage) => {
+    return (
+      <div className="space-y-2">
+        {message.parts.map((part, i) => {
+          const toolPart = part as any;
+
+          if (part.type === "text") {
+            return (
+              <MessageContent
+                key={`text-${i}`}
+                markdown
+                className="prose-h2:mt-0! prose-h2:scroll-m-0! dark:prose-invert"
+              >
+                {part.text}
+              </MessageContent>
+            );
+          }
+
+          if (part.type.startsWith("tool-") || part.type === "dynamic-tool") {
+            const toolName =
+              part.type === "dynamic-tool"
+                ? toolPart.toolName
+                : part.type.replace("tool-", "");
+
+            return (
+              <Tool
+                key={`tool-${i}`}
+                toolPart={{
+                  type: toolName,
+                  state: toolPart.state,
+                  input: toolPart.input,
+                  output: toolPart.output,
+                  toolCallId: toolPart.toolCallId,
+                  errorText: toolPart.errorText,
+                }}
+                className="w-full"
+              />
+            );
+          }
+
+          return null;
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full gap-2">
-      <div className="w-[35%] bg-card flex border rounded-md flex-col py-6 px-4 h-full overflow-hidden">
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pr-2">
+      <div className="w-[35%] bg-card flex border rounded-md flex-col py-6 px-1 h-full overflow-hidden">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto pr-2 space-y-4 min-h-0"
+        >
           {messages.map((message) => (
-            <div key={message.id} className="whitespace-pre-wrap mb-4 text-sm">
-              {message.role === "user" ? "User: " : "AI: "}
-              {message.parts.map((part, i) => {
-                switch (part.type) {
-                  case "text":
-                    return <div key={`${message.id}-${i}`}>{part.text}</div>;
-
-                  case "tool-use":
-                    return (
-                      <Tool
-                        key={`${message.id}-${i}`}
-                        toolPart={{
-                          type: (part as any).toolName,
-                          state: "input-available",
-                          input: (part as any).input,
-                          toolCallId: (part as any).toolCallId,
-                        }}
-                      />
-                    );
-
-                  case "tool-result":
-                    return (
-                      <Tool
-                        key={`${message.id}-${i}`}
-                        toolPart={{
-                          type: (part as any).toolName || "Result",
-                          state: "output-available",
-                          output: (part as any).result,
-                        }}
-                      />
-                    );
-
-                  default:
-                    return (
-                      <div key={`${message.id}-${i}`} className="text-gray-500">
-                        [{part.type}]
-                      </div>
-                    );
-                }
-              })}
-            </div>
+            <Message key={message.id}>
+              {message.role === "user" ? (
+                <MessageAvatar
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+                  alt="User"
+                  fallback="U"
+                />
+              ) : (
+                <div className="h-8 w-8 shrink-0 rounded-full bg-primary flex items-center justify-center">
+                  <Bot className="size-4 text-primary-foreground" />
+                </div>
+              )}
+              <div className="flex-1 space-y-2">
+                {renderMessageContent(message)}
+              </div>
+            </Message>
           ))}
           <div ref={messagesEndRef} />
         </div>
 
         <form
           onSubmit={handleSendMessage}
-          className="w-full mt-4 flex-shrink-0"
+          className="w-full mt-4 px-3 shrink-0"
         >
           <InputGroup>
             <InputGroupInput
