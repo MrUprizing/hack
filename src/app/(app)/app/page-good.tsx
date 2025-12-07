@@ -2,9 +2,9 @@
 
 import { useChat } from "@ai-sdk/react";
 import { FreestyleDevServer } from "freestyle-sandboxes/react/dev-server";
-import { requestDevServer } from "@/actions/dev-server";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { requestDevServer } from "@/actions/dev-server";
 import { Tool } from "@/components/ui/tool";
 
 export default function Chat() {

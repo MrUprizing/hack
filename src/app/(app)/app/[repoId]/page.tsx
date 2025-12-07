@@ -3,6 +3,18 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  Bot,
+  CodeIcon,
+  ExternalLinkIcon,
+  RefreshCcwIcon,
+} from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { requestDevServer } from "@/actions/dev-server";
+import type { ChatMessage } from "@/app/(api)/api/chat/route";
+import {
   WebPreview,
   WebPreviewBody,
   WebPreviewConsole,
@@ -11,32 +23,18 @@ import {
   WebPreviewUrl,
 } from "@/components/ai-elements/web-preview";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ExternalLinkIcon,
-  Maximize2Icon,
-  MousePointerClickIcon,
-  RefreshCcwIcon,
-  CodeIcon,
-  Bot,
-} from "lucide-react";
-import { requestDevServer } from "@/actions/dev-server";
-import { useParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { Tool } from "@/components/ui/tool";
-import { Spinner } from "@/components/ui/spinner";
-import {
   InputGroup,
-  InputGroupInput,
   InputGroupAddon,
   InputGroupButton,
+  InputGroupInput,
 } from "@/components/ui/input-group";
 import {
   Message,
   MessageAvatar,
   MessageContent,
 } from "@/components/ui/message";
-import type { ChatMessage } from "@/app/(api)/api/chat/route";
+import { Spinner } from "@/components/ui/spinner";
+import { Tool } from "@/components/ui/tool";
 
 export default function Chat() {
   const params = useParams();
@@ -49,7 +47,7 @@ export default function Chat() {
   const [reloadKey, setReloadKey] = useState(0);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +59,7 @@ export default function Chat() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, []);
 
   useEffect(() => {
     const fetchDevServer = async () => {

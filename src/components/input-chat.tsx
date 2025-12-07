@@ -1,14 +1,14 @@
 "use client";
 
+import { ArrowUp, Globe, Mic, MoreHorizontal, Plus } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   PromptInput,
   PromptInputAction,
   PromptInputActions,
   PromptInputTextarea,
 } from "@/components/ui/prompt-input";
-import { Button } from "@/components/ui/button";
-import { ArrowUp, Globe, Mic, MoreHorizontal, Plus } from "lucide-react";
-import { useState } from "react";
 
 function PromptInputWithActions() {
   const [prompt, setPrompt] = useState("");
