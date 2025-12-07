@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const repoId = body.repoId;
   const messages: ChatMessage[] = body.messages;
-
+  console.log(`Repoid: ${repoId}`);
   const mcpUrl = await getDevServerMcpUrl(repoId);
   const mcpClient = await createMCPClient({
     transport: new StreamableHTTPClientTransport(new URL(mcpUrl)),
@@ -23,14 +23,16 @@ export async function POST(req: Request) {
   const tools = await mcpClient.tools();
 
   const result = streamText({
-    model: "anthropic/claude-sonnet-4.5",
+    model: "google/gemini-2.5-pro",
     maxRetries: 5,
     system:
       "You are an AI APi Builder with HonoJs + @hono/zod-openapi. Edit the api in /template as requested. Read readme first. Only make necessary changes." +
       "First check Readme, this file contains contex about project" +
       "Avoid use a lot of tools per request. use contex" +
       "The server allways run un dev so dont run dev commands" +
-      "Dont use markdown code block on your answers",
+      "Dont use markdown code block on your answers" +
+      " Dont run comands never" +
+      "No linter, no dependency installation only when user ask for it.",
     messages: convertToModelMessages(messages),
     tools,
     abortSignal: AbortSignal.timeout(60000), // 5 seconds
