@@ -1,145 +1,144 @@
 # BackHero 🚀
 
-**Convierte ideas en backends productivos en minutos.**
+**Convert ideas into productive backends in minutes.**
 
 ---
 
-## 📌 ¿Qué es BackHero?
-BackHero es una plataforma revolucionaria que transforma simples ideas en **backends completos, seguros y listos para producción** en cuestión de minutos.
+## 📌 What is BackHero?
+BackHero is a revolutionary platform that transforms simple ideas into **complete, secure, and production-ready backends** in a matter of minutes.
 
-Olvídate de semanas de trabajo repetitivo, configuraciones complejas y costos innecesarios. Con BackHero, la innovación se acelera y la productividad se dispara.
-
----
-
-## ❓ ¿Por qué existe BackHero?
-Hoy, construir un backend sólido **toma semanas o incluso meses**. Las empresas pierden tiempo, dinero y oportunidades porque la tecnología se ha vuelto demasiado compleja:
-
-- Configuración manual
-- Integraciones críticas complicadas
-- Infraestructura costosa
-- Equipos dedicados solo a preparar cimientos
-
-Esto frena la innovación y reduce la competitividad. **BackHero elimina esa barrera.**
+Forget about weeks of repetitive work, complex configurations, and unnecessary costs. With BackHero, innovation accelerates and productivity skyrockets.
 
 ---
 
-## ⚙️ ¿Cómo funciona?
-1. **Escribe tu idea**  
-   Ejemplo: *“Necesito autenticación con roles, pagos y panel administrativo.”*
-2. **Recibe tu backend completo**  
-   Arquitectura profesional, APIs (REST, GraphQL, RPC), modelos, controladores, validaciones y tests.
-3. **Haz cambios cuando quieras**  
-   Cada ajuste actualiza todo el proyecto: migraciones, rutas, lógica y despliegues.
-4. **Listo para producción**  
-   Infraestructura automática y despliegue en AWS con un solo clic
+## ❓ Why does BackHero exist?
+Today, building a solid backend **takes weeks or even months**. Companies waste time, money, and opportunities because technology has become too complex:
+
+- Manual configuration
+- Complicated critical integrations
+- Costly infrastructure
+- Dedicated teams just to prepare foundations
+
+This slows down innovation and reduces competitiveness. **BackHero eliminates that barrier.**
 
 ---
 
-## 🔍 ¿Qué hace diferente a BackHero?
-- **No snippets. No ejemplos incompletos.**  
-  Entregamos código real, coherente y escalable.
-- **Infraestructura invisible.**  
-  Despliegues, pipelines y contenedores listos sin configuración manual.
-- **Integraciones críticas en segundos.**  
-  Autenticación, pagos, bases de datos, colas y permisos con un solo comando.
-- **Control total.**  
-  Todo el código es tuyo, editable y mantenible.
+## ⚙️ How does it work?
+1. **Write your idea**  
+   Example: *"I need authentication with roles, payments, and an admin panel."*
+2. **Get your complete backend**  
+   Professional architecture, APIs (REST, GraphQL, RPC), models, controllers, validations, and tests.
+3. **Make changes whenever you want**  
+   Every adjustment updates the entire project: migrations, routes, logic, and deployments.
+4. **Ready for production**  
+   Automatic infrastructure and deployment to AWS with a single click.
 
 ---
 
-## ✅ Beneficios clave
-- **De semanas a minutos.**  
-  Lanza MVPs y productos en tiempo récord.
-- **Ahorro de costos y recursos.**  
-  Menos horas hombre, más productividad.
-- **Validación rápida de ideas.**  
-  Prueba conceptos sin invertir meses.
-- **Escalabilidad garantizada.**  
-  Arquitectura sólida desde el día uno y despliege rapido con LAMBDA AWS.
-- **Innovación sin fricción.**  
-  Dedica tu tiempo a lo que importa: crear valor.
+## 🔍 What makes BackHero different?
+- **No snippets. No incomplete examples.**  
+  We deliver real, coherent, and scalable code.
+- **Invisible infrastructure.**  
+  Deployments, pipelines, and containers ready without manual configuration.
+- **Critical integrations in seconds.**  
+  Authentication, payments, databases, queues, and permissions with a single command.
+- **Full control.**  
+  All code is yours, editable, and maintainable.
 
 ---
 
-## 👥 ¿Para quién es BackHero?
-- **Empresas** que buscan acelerar desarrollo y reducir costos.
-- **Startups** que necesitan validar ideas rápido.
-- **Equipos ágiles** que priorizan velocidad y calidad.
-- **Freelancers** que quieren ser más eficientes.
+## ✅ Key benefits
+- **From weeks to minutes.**  
+  Launch MVPs and products in record time.
+- **Cost and resource savings.**  
+  Fewer man-hours, more productivity.
+- **Fast idea validation.**  
+  Test concepts without investing months.
+- **Guaranteed scalability.**  
+  Solid architecture from day one and fast deployment with AWS LAMBDA.
+- **Frictionless innovation.**  
+  Dedicate your time to what matters: creating value.
 
 ---
 
-## 🌍 Nuestra misión
-Que ninguna idea valiosa muera por falta de tiempo, recursos o complejidad.  
-**BackHero no solo construye backends… construye futuro.**
+## 👥 Who is BackHero for?
+- **Companies** looking to accelerate development and reduce costs.
+- **Startups** that need to validate ideas quickly.
+- **Agile teams** that prioritize speed and quality.
+- **Freelancers** who want to be more efficient.
 
 ---
 
+## 🌍 Our mission
+No valuable idea dies due to lack of time, resources, or complexity.  
+**BackHero doesn't just build backends… it builds the future.**
 
 ---
 
-## 🚀 Instalación y uso local
+---
 
-### Requisitos previos
-- **Node.js** 18+ o **Bun**
+## 🚀 Installation and local usage
+
+### Prerequisites
+- **Node.js** 18+ or **Bun**
 - **PostgreSQL** 14+
 - **Git**
 
-### Pasos de instalación
+### Installation steps
 
-1. **Clonar el repositorio**
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/tuusuario/backhero.git
+   git clone https://github.com/youruser/backhero.git
    cd backhero
    ```
 
-2. **Instalar dependencias**
+2. **Install dependencies**
    ```bash
    bun install
-   # o con npm: npm install
+   # or with npm: npm install
    ```
 
-3. **Configurar variables de entorno**
+3. **Set environment variables**
    
-   Copia `.env.example` a `.env.local`:
+   Copy `.env.example` to `.env.local`:
    ```bash
    cp .env.example .env.local
    ```
    
-   Configura estas variables en `.env.local`:
+   Configure these variables in `.env.local`:
    ```env
    # Database
-   DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/backhero"
+   DATABASE_URL="postgresql://user:password@localhost:5432/backhero"
    
-   # Autenticación
+   # Authentication
    BETTER_AUTH_URL="http://localhost:3000"
    
-   # IA (Claude)
-   ANTHROPIC_API_KEY="tu_clave_aqui"
+   # AI (Claude)
+   ANTHROPIC_API_KEY="your_key_here"
    ```
 
-4. **Configurar base de datos**
+4. **Set up database**
    ```bash
    bun run prisma migrate dev
-   # o: npx prisma migrate dev
+   # or: npx prisma migrate dev
    ```
 
-5. **Iniciar servidor de desarrollo**
+5. **Start development server**
    ```bash
    bun run dev
-   # o: npm run dev
+   # or: npm run dev
    ```
    
-   Accede en `http://localhost:3000`
+   Access at `http://localhost:3000`
 
-### Scripts disponibles
-- `bun run dev` — Servidor de desarrollo
-- `bun run build` — Build para producción
-- `bun run start` — Ejecutar build
-- `bun run lint` — Linter y formateo automático
-- `bun run format` — Formatear código
+### Available scripts
+- `bun run dev` — Development server
+- `bun run build` — Build for production
+- `bun run start` — Run build
+- `bun run lint` — Linter and automatic formatting
+- `bun run format` — Format code
 
 ---
 
-### ⭐ Apóyanos
-Si te gusta esta iniciativa, ¡dale una estrella al repositorio y únete a la revolución!
+### ⭐ Support us
+If you like this initiative, give the repository a star and join the revolution!
