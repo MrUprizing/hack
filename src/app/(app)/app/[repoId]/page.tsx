@@ -23,6 +23,13 @@ import { requestDevServer } from "@/actions/dev-server";
 import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Tool } from "@/components/ui/tool";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  InputGroup,
+  InputGroupInput,
+  InputGroupAddon,
+  InputGroupButton,
+} from "@/components/ui/input-group";
 import type { ChatMessage } from "@/app/(api)/api/chat/route";
 
 export default function Chat() {
@@ -35,13 +42,20 @@ export default function Chat() {
   const [codeServerUrl, setCodeServerUrl] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout>();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
   });
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const fetchDevServer = async () => {
@@ -96,10 +110,22 @@ export default function Chat() {
     }
   };
 
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    setIsLoading(true);
+    await sendMessage({
+      text: input,
+    });
+    setInput("");
+    setIsLoading(false);
+  };
+
   return (
     <div className="flex h-full gap-2">
-      <div className="w-[35%] bg-card flex border rounded-md flex-col py-6 px-4 overflow-hidden">
-        <div className="flex-1 overflow-y-auto">
+      <div className="w-[35%] bg-card flex border rounded-md flex-col py-6 px-4 h-full overflow-hidden">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pr-2">
           {messages.map((message) => (
             <div key={message.id} className="whitespace-pre-wrap mb-4 text-sm">
               {message.role === "user" ? "User: " : "AI: "}
@@ -143,28 +169,33 @@ export default function Chat() {
               })}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            sendMessage({
-              text: input,
-            });
-            setInput("");
-          }}
-          className="w-full"
+          onSubmit={handleSendMessage}
+          className="w-full mt-4 flex-shrink-0"
         >
-          <input
-            className="w-full p-2 border border-zinc-300 dark:border-zinc-800 rounded bg-white dark:bg-zinc-900 text-sm"
-            value={input}
-            placeholder="Build"
-            onChange={(e) => setInput(e.currentTarget.value)}
-          />
+          <InputGroup>
+            <InputGroupInput
+              placeholder="Build"
+              value={input}
+              onChange={(e) => setInput(e.currentTarget.value)}
+              disabled={isLoading}
+            />
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="submit"
+                disabled={isLoading || !input.trim()}
+              >
+                {isLoading ? <Spinner className="size-3" /> : "Send"}
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
         </form>
       </div>
 
-      <div className="w-[65%]">
+      <div className="w-[65%] h-full overflow-hidden">
         <WebPreview
           defaultUrl={ephemeralUrl}
           onUrlChange={handleUrlChange}

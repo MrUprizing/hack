@@ -23,8 +23,8 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-12 shrink-0 items-center gap-2  px-4">
+      <SidebarInset className="overflow-hidden">
+        <header className="flex h-12 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator
             orientation="vertical"
@@ -38,9 +38,7 @@ export default function DashboardLayout({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        {/*<div className="bg-input/50 border rounded-md gap-4 min-h-screen mx-4 p-4">*/}
-        {children}
-        {/*</div>*/}
+        <div className="h-[calc(100vh-48px)] overflow-hidden">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
