@@ -84,7 +84,7 @@ export default function SignIn01() {
                   {
                     email,
                     password,
-                    callbackURL: "/dashboard",
+                    callbackURL: "/app",
                   },
                   {
                     onRequest: () => {
