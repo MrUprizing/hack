@@ -25,14 +25,20 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { authClient } from "@/lib/auth-client";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const { data: session } = authClient.useSession();
+
+  if (!session) {
+    return null; // or a loading state, or a prompt to log in
+  }
 
   const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "https://github.com/shadcn.png",
+    name: session?.user?.name,
+    email: session?.user?.email,
+    avatar: `https://avatar.vercel.sh/${encodeURIComponent(session.user?.name)}?size=60`,
   };
 
   return (

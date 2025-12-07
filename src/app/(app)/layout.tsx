@@ -1,4 +1,6 @@
 // Sidebar from https://ui.shadcn.com/
+
+import { headers } from "next/headers";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -12,12 +14,20 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { redirect, RedirectType } from "next/navigation";
+import { auth } from "@/lib/auth";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    redirect("/login", RedirectType.push);
+  }
   return (
     <SidebarProvider>
       <AppSidebar />

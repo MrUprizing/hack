@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/message";
 import { Spinner } from "@/components/ui/spinner";
 import { Tool } from "@/components/ui/tool";
+import { authClient } from "@/lib/auth-client";
 
 export default function Chat() {
   const params = useParams();
@@ -125,6 +126,14 @@ export default function Chat() {
     setInput("");
     setIsLoading(false);
   };
+  const { data: session } = authClient.useSession();
+  if (!session) {
+    return null; // or a loading state, or a prompt to log in
+  }
+
+  const imageUrl =
+    session?.user.image ||
+    `https://avatar.vercel.sh/${encodeURIComponent(session?.user.name)}?size=60`;
 
   const renderMessageContent = (message: ChatMessage) => {
     return (
@@ -182,11 +191,7 @@ export default function Chat() {
           {messages.map((message) => (
             <Message key={message.id}>
               {message.role === "user" ? (
-                <MessageAvatar
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
-                  alt="User"
-                  fallback="U"
-                />
+                <MessageAvatar src={imageUrl} alt="User" fallback="U" />
               ) : (
                 <div className="h-8 w-8 shrink-0 rounded-full bg-primary flex items-center justify-center">
                   <Bot className="size-4 text-primary-foreground" />

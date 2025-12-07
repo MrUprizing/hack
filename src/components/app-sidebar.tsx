@@ -1,5 +1,4 @@
-import type * as React from "react";
-
+import { headers } from "next/headers";
 import {
   Sidebar,
   SidebarContent,
@@ -11,51 +10,50 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
+import prisma from "@/lib/prisma";
+import { CreateProyectDialog } from "./create-proyect";
 import { NavUser } from "./nav-user";
+import Link from "next/link";
 
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const proyects = session?.user?.id
+    ? await prisma.proyect.findMany({
+        where: {
+          userId: session.user.id,
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      })
+    : [];
+
   return (
     <Sidebar variant="inset" {...props}>
       <NavUser />
+      <CreateProyectDialog />
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>{item.title}</a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <SidebarGroup>
+          <SidebarGroupLabel>Proyects</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {proyects.map((proyect) => (
+                <SidebarMenuItem key={proyect.id}>
+                  <SidebarMenuButton asChild>
+                    <Link href={`/app/${proyect.id}`}>{proyect.name}</Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
