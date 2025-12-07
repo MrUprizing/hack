@@ -22,9 +22,9 @@ export async function POST(req: Request) {
 
   const tools = {
     readFile: tool({
-      description: "Lee un archivo del dev server",
+      description: "Read a file from the dev server",
       inputSchema: z.object({
-        path: z.string().describe("Ruta del archivo a leer"),
+        path: z.string().describe("Path of the file to read"),
       }),
       execute: async ({ path }) => {
         const content = await devServer.fs.readFile(path);
@@ -33,36 +33,36 @@ export async function POST(req: Request) {
     }),
 
     writeFile: tool({
-      description: "Escribe contenido en un archivo",
+      description: "Write content to a file",
       inputSchema: z.object({
-        path: z.string().describe("Ruta del archivo"),
-        content: z.string().describe("Contenido a escribir"),
+        path: z.string().describe("File path"),
+        content: z.string().describe("Content to write"),
       }),
       execute: async ({ path, content }) => {
         await devServer.fs.writeFile(path, content);
-        return `Archivo ${path} escrito correctamente`;
+        return `File ${path} written successfully`;
       },
     }),
 
     editFile: tool({
-      description: "Busca y reemplaza contenido en un archivo",
+      description: "Search and replace content in a file",
       inputSchema: z.object({
-        path: z.string().describe("Ruta del archivo"),
-        search: z.string().describe("Texto a buscar"),
-        replace: z.string().describe("Texto de reemplazo"),
+        path: z.string().describe("File path"),
+        search: z.string().describe("Text to search"),
+        replace: z.string().describe("Replacement text"),
       }),
       execute: async ({ path, search, replace }) => {
         const content = await devServer.fs.readFile(path);
         const updated = content.replace(search, replace);
         await devServer.fs.writeFile(path, updated);
-        return `Cambios aplicados a ${path}`;
+        return `Changes applied to ${path}`;
       },
     }),
 
     ls: tool({
-      description: "Lista archivos en un directorio",
+      description: "List files in a directory",
       inputSchema: z.object({
-        path: z.string().describe("Ruta del directorio"),
+        path: z.string().describe("Directory path"),
       }),
       execute: async ({ path }) => {
         const files = await devServer.fs.ls(path);
@@ -71,9 +71,9 @@ export async function POST(req: Request) {
     }),
 
     exec: tool({
-      description: "Ejecuta un comando en el dev server",
+      description: "Execute a command on the dev server",
       inputSchema: z.object({
-        command: z.string().describe("Comando a ejecutar"),
+        command: z.string().describe("Command to execute"),
       }),
       execute: async ({ command }) => {
         const result = await devServer.process.exec(command);
@@ -81,14 +81,33 @@ export async function POST(req: Request) {
       },
     }),
 
-    commitAndPush: tool({
-      description: "Commit y push de cambios al repositorio",
+    lint: tool({
+      description: "Run npm run lint to validate the code",
       inputSchema: z.object({
-        message: z.string().describe("Mensaje del commit"),
+        path: z
+          .string()
+          .optional()
+          .describe("Optional path to run lint in a specific directory"),
+      }),
+      execute: async ({ path }) => {
+        const command = path ? `npm run lint -- ${path}` : "npm run lint";
+        const result = await devServer.process.exec(command);
+        return {
+          success: result.stderr ? false : true,
+          stdout: result.stdout,
+          stderr: result.stderr,
+        };
+      },
+    }),
+
+    commitAndPush: tool({
+      description: "Commit and push changes to the repository",
+      inputSchema: z.object({
+        message: z.string().describe("Commit message"),
       }),
       execute: async ({ message }) => {
         await devServer.commitAndPush(message);
-        return `Cambios pusheados con mensaje: ${message}`;
+        return `Changes pushed with message: ${message}`;
       },
     }),
   };
@@ -97,10 +116,10 @@ export async function POST(req: Request) {
     model: anthropic("claude-haiku-4-5"),
     maxRetries: 2,
     system:
-      "Eres un constructor de API con HonoJs + @hono/zod-openapi. Edita el API en /template según lo solicitado. Lee el readme primero. Solo haz cambios necesarios. " +
-      "El servidor siempre corre en dev, no ejecutes comandos dev. " +
-      "No uses bloques de código markdown en tus respuestas. " +
-      "Nunca ejecutes comandos.",
+      "You are an API builder with HonoJs + @hono/zod-openapi. Edit the API in /template as requested. Read the readme first. Only make necessary changes. " +
+      "The server always runs in dev, do not execute dev commands. " +
+      "Do not use markdown code blocks in your responses. " +
+      "IMPORTANT: After writing or editing any code file, ALWAYS run the 'lint' tool to validate that the code is correct.",
     messages: convertToModelMessages(messages),
     tools,
     abortSignal: AbortSignal.timeout(120000),
