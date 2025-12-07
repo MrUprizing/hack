@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/sidebar";
 import { redirect, RedirectType } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { GithubIcon } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/theme-toggle";
 
 export default async function DashboardLayout({
   children,
@@ -41,11 +45,21 @@ export default async function DashboardLayout({
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>My Api</BreadcrumbPage>
+                <BreadcrumbPage className="text-lg ">BackHero</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
+          <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="outline" size="sm" asChild>
+              <Link href="https://github.com/MrUprizing/hack" target="_blank">
+                Star on GitHub
+                <GithubIcon size={10} />
+              </Link>
+            </Button>
+          </div>
         </header>
+
         <div className="h-[calc(100vh-48px)] overflow-hidden">{children}</div>
       </SidebarInset>
     </SidebarProvider>

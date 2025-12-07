@@ -97,7 +97,7 @@ export default function SignIn01() {
                       toast.error(ctx.error.message);
                     },
                     onSuccess: () => {
-                      router.push("/dashboard");
+                      router.push("/app");
                     },
                   },
                 );

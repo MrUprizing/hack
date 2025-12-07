@@ -1,6 +1,7 @@
 "use server";
 
 import { FreestyleSandboxes } from "freestyle-sandboxes";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function createProyectAction(name: string, userId: string) {
@@ -22,6 +23,8 @@ export async function createProyectAction(name: string, userId: string) {
         userId: userId,
       },
     });
+
+    revalidatePath("/app");
 
     return { success: true, proyect };
   } catch (error) {
