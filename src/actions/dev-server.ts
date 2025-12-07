@@ -19,3 +19,7 @@ export async function requestDevServer({ repoId }: { repoId: string }) {
     codeServerUrl,
   };
 }
+
+export async function getDevServer(repoId: string) {
+  return await freestyle.requestDevServer({ repoId });
+}
