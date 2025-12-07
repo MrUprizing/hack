@@ -1,6 +1,7 @@
 "use client";
 import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ export default function SignUp01() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   return (
     <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
@@ -41,6 +43,9 @@ export default function SignUp01() {
                     onResponse: () => setLoading(false),
                     onError: (ctx) => {
                       toast.error(ctx.error.message);
+                    },
+                    onSuccess: () => {
+                      router.push("/app");
                     },
                   },
                 });

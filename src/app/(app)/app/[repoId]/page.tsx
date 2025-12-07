@@ -55,6 +55,10 @@ export default function Chat() {
   const { messages, sendMessage } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({
       api: "/api/chat",
+      body: () => ({
+        repoId: repoId,
+      }),
+      credentials: () => "include",
     }),
   });
 

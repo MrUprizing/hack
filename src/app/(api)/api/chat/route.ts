@@ -12,8 +12,8 @@ export type ChatMessage = UIMessage;
 
 export async function POST(req: Request) {
   const body = await req.json();
+  const repoId = body.repoId;
   const messages: ChatMessage[] = body.messages;
-  const repoId = "b511725c-2e47-477e-97c8-2d98e7a9d6fd";
 
   const mcpUrl = await getDevServerMcpUrl(repoId);
   const mcpClient = await createMCPClient({
