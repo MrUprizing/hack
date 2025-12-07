@@ -1,25 +1,25 @@
 // Sidebar from https://ui.shadcn.com/
 
+import { GithubIcon } from "lucide-react";
 import { headers } from "next/headers";
+import Link from "next/link";
+import { RedirectType, redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
+import ThemeToggle from "@/components/theme-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { redirect, RedirectType } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { GithubIcon } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import ThemeToggle from "@/components/theme-toggle";
 
 export default async function DashboardLayout({
   children,

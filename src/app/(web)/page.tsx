@@ -1,7 +1,20 @@
-export default function Home() {
+import { BaseLayout } from "@/components/base-layout";
+import { ComparisonSection } from "@/components/comparison-section";
+import { DemoSection } from "@/components/demo-section";
+import { FeaturesSection } from "@/components/features-section";
+import { HeroSection } from "@/components/hero-section";
+import { HowItWorksSection } from "@/components/how-it-works-section";
+import { UseCasesSection } from "@/components/use-cases-sections";
+
+export default function LandingPage() {
   return (
-    <main>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </main>
+    <BaseLayout>
+      <HeroSection />
+      <FeaturesSection />
+      <UseCasesSection />
+      <HowItWorksSection />
+      <ComparisonSection />
+      <DemoSection />
+    </BaseLayout>
   );
 }

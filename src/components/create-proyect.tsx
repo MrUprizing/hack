@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createProyectAction } from "@/actions/create-pryect";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
-import { createProyectAction } from "@/actions/create-pryect";
 
 export function CreateProyectDialog() {
   const [open, setOpen] = useState(false);
